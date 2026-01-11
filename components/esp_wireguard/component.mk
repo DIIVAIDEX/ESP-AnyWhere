@@ -1,0 +1,9 @@
+COMPONENT_SRCDIRS = \
+	Src \
+	Src/crypto/refc
+COMPONENT_ADD_INCLUDEDIRS = \
+	Inc
+COMPONENT_PRIV_INCLUDEDIRS = \
+	Src
+
+COMPONENT_DEPENDS = lwip mbedtls

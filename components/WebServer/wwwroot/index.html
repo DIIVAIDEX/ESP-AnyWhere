@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ESP-AnyWhere</title>
+        <!-- <link href="./Static/materialdesignicons.min.css" rel="stylesheet"> -->
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <!-- partial:index.partial.html -->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <h5 id="popup-title"></h5>
+                <div id="popup-content-body"></div>
+            </div>
+        </div>
+        <div class="divTable">
+            <div class="divTableBody">
+                <div class="divTableRow">
+                    <div class="divTableCell" style="clear: both;  white-space: nowrap;">
+                        <h1>ESP-AnyWhere</h1>
+                    </div>
+                    <div class="device">
+			            <div id="connectionStatus"></div>
+			            <p class="device-value" id="deviceInfo">
+			                <span>Waiting for device...</span>
+			            </p>
+			            <div id="stationState"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tabs">
+            <input type="radio" id="tab1" name="tab-control" onclick="eventSend('setNormMode')" checked>
+            <input type="radio" id="tab2" name="tab-control" onclick="eventSend('setDiagMode')">
+            <input type="radio" id="tab3" name="tab-control" onclick="eventSend('getSettings')">
+            <input type="radio" id="tab4" name="tab-control" onclick="eventSend('getLogs')">
+            <ul>
+                <li title="Dash">
+                    <label for="tab1" role="button">
+                        <svg viewBox="0 0 48 48">
+                            <path d="M18,34v6H10V34h8m2-4H8a2,2,0,0,0-2,2V42a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V32a2,2,0,0,0-2-2Z"/>
+                            <path d="M18,8V22H10V8h8m2-4H8A2,2,0,0,0,6,6V24a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2V6a2,2,0,0,0-2-2Z"/>
+                            <path d="M38,8v6H30V8h8m2-4H28a2,2,0,0,0-2,2V16a2,2,0,0,0,2,2H40a2,2,0,0,0,2-2V6a2,2,0,0,0-2-2Z"/>
+                            <path d="M38,26V40H30V26h8m2-4H28a2,2,0,0,0-2,2V42a2,2,0,0,0,2,2H40a2,2,0,0,0,2-2V24a2,2,0,0,0-2-2Z"/>
+                        </svg>
+                        <br>
+                        <span>Dash</span>
+                    </label>
+                </li>
+                <li title="Diag">
+                    <label for="tab2" role="button">
+                        <svg shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 512">
+                            <path fill-rule="nonzero" d="M255.99 0c70.68 0 134.7 28.66 181.02 74.98C483.33 121.3 512 185.31 512 256c0 70.68-28.67 134.69-74.99 181.01C390.69 483.33 326.67 512 255.99 512S121.3 483.33 74.98 437.01C28.66 390.69 0 326.68 0 256c0-70.67 28.66-134.7 74.98-181.02C121.3 28.66 185.31 0 255.99 0zm77.4 269.81c13.75-8.88 13.7-18.77 0-26.63l-110.27-76.77c-11.19-7.04-22.89-2.9-22.58 11.72l.44 154.47c.96 15.86 10.02 20.21 23.37 12.87l109.04-75.66zm79.35-170.56c-40.1-40.1-95.54-64.92-156.75-64.92-61.21 0-116.63 24.82-156.74 64.92-40.1 40.11-64.92 95.54-64.92 156.75 0 61.22 24.82 116.64 64.92 156.74 40.11 40.11 95.53 64.93 156.74 64.93 61.21 0 116.65-24.82 156.75-64.93 40.11-40.1 64.93-95.52 64.93-156.74 0-61.22-24.82-116.64-64.93-156.75z"/>
+                        </svg>
+                        <br>
+                        <span>GPIOs</span>
+                    </label>
+                </li>
+                <li title="Settings">
+                    <label for="tab3" role="button">
+                        <svg viewBox="0 0 1052.045 1063.18">
+                            <path d="M361.585 21.333h328.59v118.33c35.428 14.943 65.982 32.797 93.84 54.008l-1.042-.76 104.084-60.075 164.66 286.72-104.22 59.847c2.215 15.83 3.48 34.118 3.48 52.702s-1.265 36.872-3.714 54.783l.233-2.08 104.22 59.846-164.66 286.72-104.128-60.075c-26.816 20.45-57.37 38.304-90.014 52.196l-2.783 1.052v120.786H361.587V928.596c-35.428-14.944-65.982-32.798-93.84-54.01l1.042.762-104.13 60.075L0 648.703l104.266-59.847c-2.25-16.103-3.532-34.708-3.532-53.612s1.284-37.51 3.77-55.73l-.238 2.118L.046 421.694l164.66-286.72 104.128 60.075c26.804-20.482 57.34-38.364 89.973-52.286l2.78-1.054zM621.91 89.6H429.85v99.715l-22.756 8.01c-43.604 15.5-81.234 37.518-113.828 65.273l.505-.42-18.204 15.52-85.744-49.29-96.575 168.39 86.472 49.745-4.55 23.94c-3.968 19.54-6.24 42-6.24 64.99s2.272 45.45 6.6 67.166l-.36-2.178 4.55 23.94-86.47 49.743 96.574 168.39 85.743-49.788 18.203 15.52c32.015 27.31 69.55 49.32 110.552 64.068l2.498.784 22.756 8.01v95.936h192.056V877.35l22.756-8.01c43.707-15.468 81.432-37.49 114.105-65.275l-.51.422 18.205-15.52 85.743 49.29 96.575-168.39-86.744-49.472 4.55-23.984c3.942-19.244 6.198-41.364 6.198-64.01s-2.256-44.766-6.555-66.146l.357 2.135-4.55-23.985 86.698-49.79-96.575-168.39-85.697 49.653-18.204-15.61c-32.016-27.31-69.55-49.322-110.553-64.07l-2.498-.783-22.757-8.01zm-96.03 235.747c114.867 0 207.986 93.118 207.986 207.986S640.748 741.32 525.88 741.32c-114.867 0-207.986-93.12-207.986-207.987.13-114.815 93.17-207.856 207.973-207.986h.012zm0 347.705c77.165 0 139.72-62.554 139.72-139.72s-62.555-139.718-139.72-139.718c-77.165 0-139.72 62.554-139.72 139.72.08 77.132 62.587 139.64 139.713 139.718h.007z"/>
+                        </svg>
+                        <br>
+                        <span>Settings</span>
+                    </label>
+                </li>
+                <li title="Logs">
+                    <label for="tab4" role="button">
+                        <svg viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000">
+                            <path d="M867.5,10h-735C64.9,10,10,66.7,10,136.5v727.1C10,933.3,64.9,990,132.5,990h735c67.6,0,122.5-56.7,122.5-126.5V136.5C990,66.7,935.1,10,867.5,10z M928.8,863.5c0,34.9-27.5,63.2-61.3,63.2h-735c-33.8,0-61.3-28.4-61.3-63.2V136.5c0-34.9,27.5-63.2,61.3-63.2h735c33.8,0,61.3,28.4,61.3,63.2V863.5z M806.3,231.3H285.6c-16.9,0-30.6,14.2-30.6,31.6c0,17.4,13.7,31.6,30.6,31.6h520.6c16.9,0,30.6-14.1,30.6-31.6C836.9,245.5,823.2,231.3,806.3,231.3z M806.3,389.4H285.6c-16.9,0-30.6,14.1-30.6,31.6c0,17.4,13.7,31.6,30.6,31.6h520.6c16.9,0,30.6-14.2,30.6-31.6C836.9,403.5,823.2,389.4,806.3,389.4z M806.3,547.4H285.6c-16.9,0-30.6,14.2-30.6,31.6s13.7,31.6,30.6,31.6h520.6c16.9,0,30.6-14.1,30.6-31.6S823.2,547.4,806.3,547.4z M806.3,705.5H285.6c-16.9,0-30.6,14.1-30.6,31.6c0,17.4,13.7,31.6,30.6,31.6h520.6c16.9,0,30.6-14.1,30.6-31.6C836.9,719.6,823.2,705.5,806.3,705.5z M163.1,294.5h61.3v-63.2h-61.3V294.5z M163.1,452.6h61.3v-63.2h-61.3V452.6z M163.1,610.6h61.3v-63.2h-61.3V610.6z M163.1,768.7h61.3v-63.2h-61.3V768.7z"/>
+                        </svg>
+                        <br>
+                        <span>Logs</span>
+                    </label>
+                </li>
+            </ul>
+            <div class="slider">
+                <div class="indicator"></div>
+            </div>
+            <div class="content">
+                <section>
+                    <h2>Dash</h2>
+                    <div class="card_holder">
+				        <div class="card">
+				          <h3>Com</h3>
+				          <div class="toggle-container">
+				            <div class="toggle-item">
+				              <span class="custom-text clickable" >Wi-Fi SoftAP</span>
+				              <div class="toggle">
+				                <input type="checkbox" id="SoftAP" onclick="eventIoSend('SoftAP')">
+				                <label for="toggle1"></label>
+				              </div>
+				            </div>
+				            <div class="toggle-item">
+				              <span class="custom-text clickable")">Only 2G</span>
+				              <div class="toggle">
+				                <input type="checkbox" id="Only2G" onclick="eventIoSend('Only2G')">
+				                <label for="toggle2"></label>
+				              </div>
+				            </div>
+				          </div>
+				          <p class="card-bottom"></p>
+				        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Diag</h2>
+                    <div class="card_holder">
+                        <div class="cardDiag">
+                            <h3>Выходы</h3>
+                            <div class="toggle-container">
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName1">1</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput1" onclick="eventIoSend('toggleOutput1')">
+                                        <label for="toggleOutput1"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName2">2</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput2" onclick="eventIoSend('toggleOutput2')">
+                                        <label for="toggleOutput2"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName3">3</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput3" onclick="eventIoSend('toggleOutput3')">
+                                        <label for="toggleOutput3"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName4">4</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput4" onclick="eventIoSend('toggleOutput4')">
+                                        <label for="toggleOutput4"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName5">5</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput5" onclick="eventIoSend('toggleOutput5')">
+                                        <label for="toggleOutput5"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName6">6</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput6" onclick="eventIoSend('toggleOutput6')">
+                                        <label for="toggleOutput6"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName7">7</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput7" onclick="eventIoSend('toggleOutput7')">
+                                        <label for="toggleOutput7"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="outName8">8</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleOutput8" onclick="eventIoSend('toggleOutput8')">
+                                        <label for="toggleOutput8"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-bottom"></p>
+                        </div>
+                        <div class="cardDiag">
+                            <h3>Входы</h3>
+                            <div class="toggle-container">
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName1">1</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput1" disabled>
+                                        <label for="toggleInput1"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName2">2</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput2" disabled>
+                                        <label for="toggleInput2"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName3">3</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput3" disabled>
+                                        <label for="toggleInput3"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName4">4</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput4" disabled>
+                                        <label for="toggleInput4"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName5">5</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput5" disabled>
+                                        <label for="toggleInput5"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName6">6</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput6" disabled>
+                                        <label for="toggleInput6"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName7">7</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput7" disabled>
+                                        <label for="toggleInput7"></label>
+                                    </div>
+                                </div>
+                                <div class="toggle-item">
+                                    <span class="custom-text" id="inName8">8</span>
+                                    <div class="toggle">
+                                        <input type="checkbox" id="toggleInput8" disabled>
+                                        <label for="toggleInput8"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="card-bottom"></p>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Settings</h2>
+                    <div class="middle">
+                        <div class="menu">
+                            <li class="item" id="wireguard">
+                                <a href="#wireguard" class="btn">
+                                    <span class="mdi mdi-antenna"></span>
+                                    Wireguard Settings
+                                </a>
+                                <div class="smenu">
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wgPrivateKey">
+                                        <label>Private Key</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Private Key</b>
+                                                <br/>...
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wgLocalIP">
+                                        <label>Local IP Address</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Local IP Address</b>
+                                                <br/>...
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wgLocalMask">
+                                        <label>Local IP Mask</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Local IP Mask</b>
+                                                <br/>...
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wgPublicPeerKey">
+                                        <label>Peer Public Key</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Peer Public Key</b>
+                                                <br/>...
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wgPeerAddress">
+                                        <label>Peer Address</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Peer Address</b>
+                                                <br/>...
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wgPeerPort">
+                                        <label>Peer Port</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Peer Port</b>
+                                                <br/>...
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="closebutton" id="saveWgBtn" onclick="SaveBtn('wireguard')">Сохранить</button>
+                                </div>
+                            </li>
+                            <li class="item" id="wifiAp">
+                                <a href="#wifiAp" class="btn">
+                                    <span class="mdi mdi-antenna"></span>
+                                    Wi-Fi SoftAP Settings
+                                </a>
+                                <div class="smenu">
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wifiApName">
+                                        <label>Имя точки доступа</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Имя точки доступа</b>
+                                                <br/>Как будет называться Wi-Fi, к которому  можно подключаться с телефона для настройки станции.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wifiApPass">
+                                        <label>Пароль точки доступа</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Пароль точки доступа</b>
+                                                <br/>Какой будет пароль у точки доступа Wi-Fi.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wifiApCh">
+                                        <label>Канал</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Канал</b>
+                                                <i>(Optional)</i>
+                                                <br/>Канал на котором работает Wi-Fi от 1 до 14. Можно поменять, если связь со станцией по Wi-Fi не стабильна.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="closebutton" id="saveSoftAPBtn" onclick="SaveBtn('wifiAp')">Сохранить</button>
+                                </div>
+                            </li>
+                            <li class="item" id="wifiSta">
+                                <a href="#wifiSta" class="btn">
+                                    <span class="mdi mdi-wifi"></span>
+                                    Wi-Fi Station Settings
+                                </a>
+                                <div class="smenu">
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wifiStaName">
+                                        <label>Имя точки доступа</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Имя точки доступа</b>
+                                                <br/>Ну имя Wi-Fi (вафли), как ещё-то обьяснить!
+                  
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="wifiStaPass">
+                                        <label>Пароль</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Пароль на Wi-Fi</b>
+                                                <br/>Ну ёпрст, пароль, просто пароль!
+                  
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="closebutton" id="saveWifiBtn" onclick="SaveBtn('wifiSta')">Сохранить</button>
+                                </div>
+                            </li>
+                            <li class="item" id="ota">
+                                <a href="#ota" class="btn">
+                                    <span class="mdi mdi-update"></span>
+                                    OTA & System
+                                </a>
+                                <div class="smenu">
+                                    <div class="smenu textfield">
+                                        <input placeholder=" " type="text" id="shutdown">
+                                        <label>Time in off state</label>
+                                        <div class="info">
+                                            <span class="mdi mdi-information"></span>
+                                            <span class="extra-info">
+                                                <b>Time in off state</b>
+                                                <br/>How long in to be in off state in seconds
+                  
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="closebutton" onclick="eventIoSend('shutdown');">Shutdown</button>
+                                    <button class="closebutton" onclick="eventSend('reboot');">Reboot</button>
+                                    <button class="closebutton" onclick="eventSend('printStats');">PrintSysStats</button>
+                                    <button class="closebutton" onclick="eventSend('storageFlush');">StorageFlush</button>
+                                    <button class="closebutton" onclick="eventSend('updateFW');">Update FW</button>
+                                    <button class="closebutton" onclick="window.location.href='#';">Закрыть</button>
+                                </div>
+                            </li>
+	</u></div></section>
+				<section>
+				    <h2>Logs</h2>
+					<textarea class="textfieldLogs"
+						id="logTextarea"
+						readonly 
+						style="font-family: monospace;"
+					></textarea>
+				</section>
+</div></div>
+<div class="divTable">
+    <div class="divTableBody">
+        <div class="divTableRow">
+            <div class="divTableCell-footer" style="white-space: nowrap;">
+                &copy;2025 <a href="https://diiv.su" target="_blank">DIIV Design</a>
+            </div>
+            <div class="divTableCell-footer" style="white-space: nowrap;">
+                Very flexible code project for <br/>ESP32-S3 with A7670E.
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- partial -->
+<!-- <script src="./script.js"></script> -->
+<script src="./scriptWS.js"></script>
+</body></html>

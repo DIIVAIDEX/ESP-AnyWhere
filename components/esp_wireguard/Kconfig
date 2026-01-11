@@ -1,0 +1,60 @@
+menu "WireGuard"
+    menu "Connection Config"
+		config WG_PRIVATE_KEY
+		    string "Private Key"
+		    default "kP+BOf33eIEocYB6dyoiNji8Up7Smv8ehjejVGJzdkE="
+		config WG_LOCAL_IP_ADDRESS
+		    string "Local IP Address"
+		    default "172.16.4.8"
+		config WG_LOCAL_IP_NETMASK
+		    string "Local Mask"
+		    default "255.255.255.0"
+		config WG_LOCAL_PORT
+		    int "Local Port"
+		    default 51820
+		    
+		config WG_PEER_PUBLIC_KEY
+		    string "Public Key"
+		    default "Ef3PXKahmRGphGyIWXqs37uqOODj9IlRaKXWNppZJRE="
+		config WG_PEER_ADDRESS
+		    string "Peer Address"
+		    default "your.server"
+		config WG_PEER_PORT
+		    int "Peer Port"
+		    default 51820
+		config WG_PERSISTENT_KEEP_ALIVE
+		    int "Persistent Keep Alive"
+		    default 60
+    endmenu
+
+	choice WIREGUARD_ESP_ADAPTER_SELECTION
+	    prompt "TCP/IP adapter to use"
+	    default WIREGUARD_ESP_NETIF
+	    config WIREGUARD_ESP_TCPIP_ADAPTER
+	        bool "TCP/IP Adapter (pre esp-idf v4.1, ESP8266 RTOS SDK)"
+	    config WIREGUARD_ESP_NETIF
+	        bool "ESP-NETIF"
+	endchoice
+	
+	config WIREGUARD_MAX_PEERS
+	    int "Max number of peers"
+	    default 1
+	
+	config WIREGUARD_MAX_SRC_IPS
+		int "Max number of SRC IP addresses"
+		default 2
+	
+	config MAX_INITIATIONS_PER_SECOND
+	    int "Per device limit on accepting (valid) initiation requests"
+	    default 2
+	    help
+	        Per device limit on accepting (valid) initiation requests - per peer.
+	choice WIREGUARD_x25519_IMPLEMENTATION
+	    prompt "x25519 implementation to use"
+	    default WIREGUARD_x25519_IMPLEMENTATION_DEFAULT
+	    config WIREGUARD_x25519_IMPLEMENTATION_DEFAULT
+	        bool "Default (originally from wireguard-lwip)"
+	    config WIREGUARD_x25519_IMPLEMENTATION_NACL
+	        bool "NaCL"
+	endchoice
+endmenu
