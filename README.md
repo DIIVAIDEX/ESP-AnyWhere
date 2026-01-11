@@ -23,11 +23,11 @@ This project provides a low cost solution to set up remote monitoring and dispat
 ## Requirements
 Waveshare [ESP32-S3-A7670E-4G](https://www.waveshare.com/wiki/ESP32-S3-A7670E-4G) board
 
-![ESP32-S3-A7670E-4G](https://github.com/user-attachments/assets/e416aef3-b56b-4171-b66e-b3c23577d789)
+![ESP32-S3-A7670E-4G](https://github.com/user-attachments/assets/c1192f4c-6738-4e2b-b229-f654498a13b3)
 
 NGINX server as forward proxy (can be hosted on cloud, VPS, or local machine) with Wireguard VPN
 
 Basic familiarity with ESP-IDF framework
 
 ##
-![3](https://github.com/user-attachments/assets/aac301eb-1afb-4aaf-b73c-1dd7875e10be)
+![3](https://github.com/user-attachments/assets/fca9bbdb-facb-4ca0-acf2-72cd6845a252)
